@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>세븐나이츠 리버스 공략집</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 960px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 18px;
+      padding: 20px 24px 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      color: #bfdbfe;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* 공성전 메인 카드 */
+    .card {
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.3), rgba(30, 64, 175, 0.5));
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      border: 1px solid rgba(56, 189, 248, 0.6);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.4), rgba(59, 130, 246, 0.6));
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: #e5e7eb;
+    }
+
+    .card-cta {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(191, 219, 254, 0.9);
+      color: #dbeafe;
+      background: rgba(15, 23, 42, 0.35);
+    }
+
+    /* 공성전 상세 영역 */
+    .section {
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 14px 16px 16px;
+      display: none; /* 기본은 숨김 */
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .section-sub {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    .close-btn {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: transparent;
+      color: #e5e7eb;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    /* 요일 버튼 */
+    .days {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .day-btn {
+      flex: 1 1 calc(14% - 4px);
+      min-width: 50px;
+      padding: 8px 0;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s ease, transform 0.12s ease, border-color 0.12s ease;
+    }
+
+    .day-btn:hover {
+      background: rgba(30, 64, 175, 0.7);
+      transform: translateY(-1px);
+      border-color: rgba(129, 140, 248, 0.9);
+    }
+
+    .day-btn.active {
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      color: #0b1120;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    /* 내용 영역 */
+    .content {
+      border-radius: 12px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      color: #e5e7eb;
+      min-height: 160px;
+    }
+
+    .content-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #bfdbfe;
+    }
+
+    .content-meta {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .content ul {
+      margin-left: 16px;
+      margin-top: 4px;
+    }
+
+    .content li {
+      margin-bottom: 3px;
+      line-height: 1.35;
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 0.7rem;
+      color: #6b7280;
+    }
+
+    /* --- 캐릭터 초상화 + 추천 아이템 --- */
+    .char-section-title {
+      margin: 6px 0 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .char-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .char-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .char-name {
+      margin-bottom: 4px;
+      font-weight: 600;
+      color: #e5e7eb;
+      font-size: 0.78rem;
+    }
+
+    .char-portrait {
+      width: 100%;
+      aspect-ratio: 3 / 4; /* 모든 초상화 같은 비율 */
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .char-items-title {
+      margin-top: 2px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #bfdbfe;
+    }
+
+    .char-items {
+      list-style: disc;
+      margin: 2px 0 0 14px;
+      font-size: 0.7rem;
+      text-align: left;
+    }
+
+    @media (max-width: 800px) {
+      .char-list {
+        grid-template-columns: repeat(3, 1fr); /* 화면 좁으면 3열 */
+      }
+    }
+
+    @media (max-width: 540px) {
+      .app {
+        padding: 16px;
+      }
+      .card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .card-cta {
+        align-self: flex-end;
+      }
+      .content {
+        font-size: 0.8rem;
+      }
+      .char-list {
+        grid-template-columns: repeat(2, 1fr); /* 아주 작을 땐 2열 */
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <div class="title">세븐나이츠 리버스 공략집</div>
+        <div class="subtitle">개인용 공략 정리 · 세나R 공성전/덱 정보 모음</div>
+      </div>
+      <div class="tag">v0.2 · 로컬 전용</div>
+    </header>
+
+    <main>
+      <!-- 공성전 메인 카드 -->
+      <section class="card" id="siege-card">
+        <div>
+          <div class="card-title">공성전</div>
+          <div class="card-desc">
+            요일별 추천 덱, 공략 팁, 보스 패턴, 캐릭터 빌드까지 한 번에 정리하는 공간입니다.<br />
+            아래 버튼 한 번으로 월~일 공성전 정보를 빠르게 확인해 보세요.
+          </div>
+        </div>
+        <div class="card-cta">공성전 열기</div>
+      </section>
+
+      <!-- 공성전 상세 영역 -->
+      <section class="section" id="siege-section">
+        <div class="section-header">
+          <div>
+            <div class="section-title">공성전 요일별 공략</div>
+            <div class="section-sub">요일을 눌러 해당 날 공성전 정보를 확인하세요.</div>
+          </div>
+          <button class="close-btn" id="close-siege">닫기</button>
+        </div>
+
+        <!-- 요일 버튼 -->
+        <div class="days">
+          <button class="day-btn" data-day="mon">월</button>
+          <button class="day-btn" data-day="tue">화</button>
+          <button class="day-btn" data-day="wed">수</button>
+          <button class="day-btn" data-day="thu">목</button>
+          <button class="day-btn" data-day="fri">금</button>
+          <button class="day-btn" data-day="sat">토</button>
+          <button class="day-btn" data-day="sun">일</button>
+        </div>
+
+        <!-- 내용 영역 -->
+        <div class="content" id="siege-content">
+          <div class="content-title">요일을 선택해 주세요</div>
+          <div class="content-meta">월~일 중 하나를 선택하면 이 영역에 해당 요일 공략이 표시됩니다.</div>
+          <p>각 요일마다 사용할 캐릭터 5명, 추천 아이템, 공략 팁을 정리해두면 편합니다.</p>
+          <p class="hint">※ 아래 자바스크립트 데이터(<code>siegeData</code>)를 수정하면 내용이 바뀝니다.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // --- 요일별 공성전 데이터 ---
+    const siegeData = {
+      mon: {
+        title: "월요일 공성전 (루디)",
+        meta: "밸런스 진형",
+        chars: [
+          {
+            name: "미호",
+            img: "images/magic/miho.png",
+            items: [
+              "복수자",
+              "무기 - 치확 치피",
+              "방어구 - 공퍼 공퍼",
+              "반지 - 토벌반지(치확 or 약공 세공)"
+            ]
+          },
+          {
+            name: "루리",
+            img: "images/magic/ruri.png",
+            items: [
+              "복수자",
+              "무기 - 치확 치피",
+              "방어구 - 공퍼 공퍼",
+              "반지 - 토벌반지(치확 or 약공 세공)"
+            ]
+          },
+          {
+            name: "비스킷",
+            img: "images/support/biscuit.png",
+            items: [
+              "암살자 or 복수자",
+              "무기 - 치확 치확 -> 100%",
+              "방어구 - 공퍼 공퍼",
+              "반지 - 권능반지"
+            ]
+          },
+          {
+            name: "에반",
+            img: "images/defense/evan.png",
+            items: [
+              "수문장",
+              "무기 - 방퍼 방퍼",
+              "방어구 - 막기 막기",
+              "반지 - 아무거나"
+            ]
+          },
+          {
+            name: "오를리",
+            img: "images/support/orly.png",
+            items: [
+              "수문장",
+              "무기 - 생퍼 약공 or 생퍼 생퍼",
+              "방어구 - 막기 막기",
+              "반지 - 기합 or 권능"
+            ]
+          }
+        ],
+        tips: [
+          "*속공 순서 루리/미호 - 29 이상, 에반(16) 비스킷(19) 오를리(19)",
+          "스킬 순서",
+          "1라 - 미호 위",
+          "2라 - 비스킷 위",
+          "3라 - 루리 위, 오를리 아래, 비스킷 아래, 미호 아래, 루리 아래, 미호 위, 루리 위, 오를리 아래, 비스킷 위, 미호 아래, 루리 아래, 비스킷 아래, 루리 위, 오를리 아래, 미호 위, 미호 아래, 루리 아래, 루리 위"
+        ]
+      },
+      tue: {
+        title: "화요일 공성전 (아일린)",
+        meta: "밸런스 진형",
+        chars: [
+          {
+            name: "미호",
+            img: "images/magic/miho.png",
+            items: ["장비"]
+          },
+          {
+            name: "루리",
+            img: "images/magic/ruri.png",
+            items: ["장비"]
+          },
+          {
+            name: "비스킷",
+            img: "images/support/biscuit.png",
+            items: ["장비"]
+          },
+          {
+            name: "리나",
+            img: "images/support/lina.png",
+            items: ["장비"]
+          },
+          {
+            name: "클로에",
+            img: "images/support/chloe.png",
+            items: ["장비"]
+          }
+        ],
+        tips: ["스킬순서 :"]
+      },
+      wed: {
+        title: "수요일 공성전 (레이첼)",
+        meta: "밸런스 진형",
+        chars: [
+          {
+            name: "미호",
+            img: "images/magic/miho.png",
+            items: ["장비"]
+          },
+          {
+            name: "루리",
+            img: "images/magic/ruri.png",
+            items: ["장비"]
+          },
+          {
+            name: "비스킷",
+            img: "images/support/biscuit.png",
+            items: ["장비"]
+          },
+          {
+            name: "오를리",
+            img: "images/support/orly.png",
+            items: ["장비"]
+          },
+          {
+            name: "라이언",
+            img: "images/attack/ryan.png",
+            items: ["장비"]
+          }
+        ],
+        tips: ["스킬순서 :"]
+      },
+      thu: {
+        title: "목요일 공성전 (델론즈)",
+        meta: "밸런스 진형",
+        chars: [
+          {
+            name: "타카",
+            img: "images/attack/taka.png",
+            items: ["장비"]
+          },
+          {
+            name: "라이언",
+            img: "images/attack/ryan.png",
+            items: ["장비"]
+          },
+          {
+            name: "비스킷",
+            img: "images/support/biscuit.png",
+            items: ["장비"]
+          },
+          {
+            name: "레이첼",
+            img: "images/versatile/rachael.png",
+            items: ["장비"]
+          },
+          {
+            name: "진",
+            img: "images/attack/jin.png",
+            items: ["장비"]
+          }
+        ],
+        tips: ["스킬순서 :"]
+      },
+      fri: {
+        title: "금요일 공성전 (제이브)",
+        meta: "밸런스 진형",
+        chars: [
+          {
+            name: "라이언",
+            img: "images/attack/ryan.png",
+            items: ["장비"]
+          },
+          {
+            name: "타카",
+            img: "images/attack/taka.png",
+            items: ["장비"]
+          },
+          {
+            name: "레이첼",
+            img: "images/versatile/rachael.png",
+            items: ["장비"]
+          },
+          {
+            name: "비스킷",
+            img: "images/support/biscuit.png",
+            items: ["장비"]
+          },
+          {
+            name: "지크",
+            img: "images/versatile/zeke.png",
+            items: ["장비"]
+          }
+        ],
+        tips: ["스킬순서 :"]
+      },
+      sat: {
+        title: "토요일 공성전 (스파이크)",
+        meta: "밸런스 진형",
+        chars: [
+          {
+            name: "카일",
+            img: "images/attack/kyle.png",
+            items: ["장비"]
+          },
+          {
+            name: "라이언",
+            img: "images/attack/ryan.png",
+            items: ["장비"]
+          },
+          {
+            name: "비스킷",
+            img: "images/support/biscuit.png",
+            items: ["장비"]
+          },
+          {
+            name: "레이첼",
+            img: "images/versatile/rachael.png",
+            items: ["장비"]
+          },
+          {
+            name: "풍연",
+            img: "images/attack/pungyeon.png",
+            items: ["장비"]
+          }
+        ],
+        tips: ["스킬순서 :"]
+      },
+      sun: {
+        title: "일요일 공성전 (크리스)",
+        meta: "밸런스 진형",
+        chars: [
+          {
+            name: "세인",
+            img: "images/attack/sein.png",
+            items: ["장비"]
+          },
+          {
+            name: "지크",
+            img: "images/versatile/zeke.png",
+            items: ["장비"]
+          },
+          {
+            name: "레이첼",
+            img: "images/versatile/rachael.png",
+            items: ["장비"]
+          },
+          {
+            name: "비스킷",
+            img: "images/support/biscuit.png",
+            items: ["장비"]
+          },
+          {
+            name: "레오",
+            img: "images/attack/leo.png",
+            items: ["장비"]
+          }
+        ],
+        tips: ["스킬순서 :"]
+      }
+    };
+
+    // --- DOM 요소 ---
+    const siegeCard = document.getElementById("siege-card");
+    const siegeSection = document.getElementById("siege-section");
+    const closeSiegeBtn = document.getElementById("close-siege");
+    const dayButtons = document.querySelectorAll(".day-btn");
+    const contentBox = document.getElementById("siege-content");
+
+    // 공성전 카드 클릭 → 섹션 열기
+    siegeCard.addEventListener("click", () => {
+      siegeSection.style.display = "block";
+      selectDay("mon"); // 기본 월요일
+    });
+
+    // 닫기 버튼 → 섹션 닫기
+    closeSiegeBtn.addEventListener("click", () => {
+      siegeSection.style.display = "none";
+      dayButtons.forEach((btn) => btn.classList.remove("active"));
+      contentBox.innerHTML = `
+        <div class="content-title">요일을 선택해 주세요</div>
+        <div class="content-meta">월~일 중 하나를 선택하면 이 영역에 해당 요일 공략이 표시됩니다.</div>
+        <p>각 요일마다 사용할 캐릭터 5명, 추천 아이템, 공략 팁을 정리해두면 편합니다.</p>
+        <p class="hint">※ 자바스크립트 데이터(<code>siegeData</code>)를 수정하면 내용이 바뀝니다.</p>
+      `;
+    });
+
+    // 요일 버튼 클릭 이벤트
+    dayButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const dayKey = button.getAttribute("data-day");
+        selectDay(dayKey);
+      });
+    });
+
+    // 요일 선택 처리
+    function selectDay(dayKey) {
+      // 버튼 active 처리
+      dayButtons.forEach((btn) => {
+        if (btn.getAttribute("data-day") === dayKey) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+
+      const data = siegeData[dayKey];
+      if (!data) {
+        contentBox.innerHTML = `
+          <div class="content-title">데이터 없음</div>
+          <div class="content-meta">아직 이 요일에 대한 공략이 등록되지 않았습니다.</div>
+          <p><code>siegeData.${dayKey}</code> 부분을 수정해서 공략을 추가해 보세요.</p>
+        `;
+        return;
+      }
+
+      // 캐릭터 카드 HTML
+      let charCards = "";
+      if (data.chars && data.chars.length > 0) {
+        charCards = data.chars
+          .map((c) => {
+            const items = (c.items || [])
+              .map((it) => `<li>${it}</li>`)
+              .join("");
+            return `
+              <div class="char-card">
+                <div class="char-name">${c.name}</div>
+                <img src="${c.img}" alt="${c.name}" class="char-portrait" />
+                <div class="char-items-title">추천 아이템</div>
+                <ul class="char-items">
+                  ${items}
+                </ul>
+              </div>
+            `;
+          })
+          .join("");
+      } else {
+        charCards = `<p class="hint">등록된 캐릭터 정보가 없습니다. <code>chars</code> 배열을 채워 주세요.</p>`;
+      }
+
+      // 공략 팁 목록
+      const tipsList = (data.tips || [])
+        .map((tip) => `<li>${tip}</li>`)
+        .join("");
+
+      contentBox.innerHTML = `
+        <div class="content-title">${data.title}</div>
+        <div class="content-meta">${data.meta}</div>
+
+        <div class="char-section-title">캐릭터 & 추천 아이템</div>
+        <div class="char-list">
+          ${charCards}
+        </div>
+
+        <div class="char-section-title">공략 팁</div>
+        <ul>
+          ${tipsList}
+        </ul>
+
+        <div class="hint">※ 캐릭터 초상화는 <code>images/...</code> 경로에 이미지 파일을 두고, <code>siegeData</code>의 <code>img</code> 값을 수정하면 됩니다.</div>
+      `;
+    }
+  </script>
+</body>
+</html>
