@@ -64,7 +64,7 @@
       gap: 18px;
     }
 
-    /* 공성전 메인 카드 */
+    /* 메인 카드 공통 */
     .card {
       border-radius: 16px;
       background: linear-gradient(135deg, rgba(15, 118, 110, 0.3), rgba(30, 64, 175, 0.5));
@@ -103,13 +103,13 @@
       background: rgba(15, 23, 42, 0.35);
     }
 
-    /* 공성전 상세 영역 */
+    /* 상세 섹션 공통 */
     .section {
       border-radius: 14px;
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid rgba(148, 163, 184, 0.5);
       padding: 14px 16px 16px;
-      display: none; /* 기본은 숨김 */
+      display: none;
       animation: fadeIn 0.2s ease-out;
     }
 
@@ -219,7 +219,7 @@
       color: #6b7280;
     }
 
-    /* --- 캐릭터 초상화 + 추천 아이템 --- */
+    /* --- 공성전 캐릭터 초상화 + 추천 아이템 --- */
     .char-section-title {
       margin: 6px 0 4px;
       font-size: 0.85rem;
@@ -255,7 +255,7 @@
 
     .char-portrait {
       width: 100%;
-      aspect-ratio: 3 / 4; /* 모든 초상화 같은 비율 */
+      aspect-ratio: 3 / 4;
       object-fit: cover;
       border-radius: 8px;
       margin-bottom: 4px;
@@ -276,9 +276,91 @@
       text-align: left;
     }
 
+    /* --- 캐릭터 섹션용 버튼 & 상세 --- */
+    .character-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .character-btn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.12s ease, border-color 0.12s ease;
+    }
+
+    .character-btn:hover {
+      background: rgba(30, 64, 175, 0.7);
+      transform: translateY(-1px);
+      border-color: rgba(129, 140, 248, 0.9);
+    }
+
+    .character-btn.active {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: #0b1120;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    .character-detail {
+      display: grid;
+      grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .character-detail-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .character-detail-name {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .character-detail-role {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    .character-detail-right-section-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 4px;
+      margin-bottom: 2px;
+      color: #bfdbfe;
+    }
+
+    .badge-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+      margin-bottom: 6px;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
     @media (max-width: 800px) {
       .char-list {
-        grid-template-columns: repeat(3, 1fr); /* 화면 좁으면 3열 */
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .character-detail {
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
@@ -298,7 +380,10 @@
         font-size: 0.8rem;
       }
       .char-list {
-        grid-template-columns: repeat(2, 1fr); /* 아주 작을 땐 2열 */
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .character-buttons {
+        gap: 4px;
       }
     }
 
@@ -315,10 +400,22 @@
         <div class="title">세븐나이츠 리버스 공략집</div>
         <div class="subtitle">개인용 공략 정리 · 세나R 공성전/덱 정보 모음</div>
       </div>
-      <div class="tag">v0.2 · 로컬 전용</div>
+      <div class="tag">v0.3 · 로컬/웹용</div>
     </header>
 
     <main>
+      <!-- 캐릭터 메인 카드 (공성전 위에 위치) -->
+      <section class="card" id="character-card">
+        <div>
+          <div class="card-title">캐릭터</div>
+          <div class="card-desc">
+            캐릭터별 초상화, 주요 장비 세팅, 주로 사용하는 컨텐츠 정보를 한 곳에 정리합니다.<br />
+            가나다 순으로 캐릭터를 선택해서 상세 정보를 확인해 보세요.
+          </div>
+        </div>
+        <div class="card-cta">캐릭터 열기</div>
+      </section>
+
       <!-- 공성전 메인 카드 -->
       <section class="card" id="siege-card">
         <div>
@@ -329,6 +426,27 @@
           </div>
         </div>
         <div class="card-cta">공성전 열기</div>
+      </section>
+
+      <!-- 캐릭터 상세 영역 -->
+      <section class="section" id="character-section">
+        <div class="section-header">
+          <div>
+            <div class="section-title">캐릭터 정보</div>
+            <div class="section-sub">가나다 순으로 캐릭터를 선택해 상세 정보를 확인하세요.</div>
+          </div>
+          <button class="close-btn" id="close-character">닫기</button>
+        </div>
+
+        <div class="character-buttons" id="character-buttons">
+          <!-- JS에서 캐릭터 이름 버튼 자동 생성 -->
+        </div>
+
+        <div class="content" id="character-content">
+          <div class="content-title">캐릭터를 선택해 주세요</div>
+          <div class="content-meta">위의 버튼들 중 하나를 선택하면 해당 캐릭터의 초상화, 주요 장비, 활용 컨텐츠가 표시됩니다.</div>
+          <p class="hint">※ 아래 <code>characterData</code> 내용을 수정하면 캐릭터 정보가 바뀝니다.</p>
+        </div>
       </section>
 
       <!-- 공성전 상세 영역 -->
@@ -364,7 +482,709 @@
   </div>
 
   <script>
-    // --- 요일별 공성전 데이터 ---
+    /* --- 캐릭터 데이터: 가나다 순 버튼 + 상세 정보 --- */
+    const characterData = {
+      // key는 임의, displayName은 실제 표시 이름 (가나다 정렬 기준)
+        /* ================= 공격형 (attack 폴더) ================= */
+  dellons: {
+    displayName: "델론즈",
+    role: "공격형",
+    img: "images/attack/dellons.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "PvE 딜"],
+    notes: ["고딜 포텐셜을 가진 대표 공격형 딜러."]
+  },
+  ballista: {
+    displayName: "발리스타",
+    role: "공격형",
+    img: "images/attack/ballista.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "결투장"],
+    notes: ["속도와 치명 세팅이 중요."]
+  },
+  bidam: {
+    displayName: "비담",
+    role: "공격형",
+    img: "images/attack/bidam.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["보스전", "단일 딜 컨텐츠"],
+    notes: ["단일 대상 폭딜에 강한 캐릭터."]
+  },
+  amelia: {
+    displayName: "아멜리아",
+    role: "공격형",
+    img: "images/attack/amelia.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "PvE"],
+    notes: ["기동성과 폭딜을 함께 챙기는 타입."]
+  },
+  kagura: {
+    displayName: "카구라",
+    role: "공격형",
+    img: "images/attack/kagura.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "PvE 딜"],
+    notes: ["다양한 상황에서 활용되는 공격형 딜러."]
+  },
+  colt: {
+    displayName: "콜트",
+    role: "공격형",
+    img: "images/attack/colt.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["결투장", "공성전"],
+    notes: ["치명 기반 딜링이 핵심."]
+  },
+  klahahn: {
+    displayName: "클라한",
+    role: "공격형",
+    img: "images/attack/klahahn.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["보스전", "공성전"],
+    notes: ["지속딜 형태로 운용되는 딜러."]
+  },
+  teo: {
+    displayName: "태오",
+    role: "공격형",
+    img: "images/attack/teo.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "PvE"],
+    notes: ["속공 세팅과 폭딜이 중요한 캐릭터."]
+  },
+  fai: {
+    displayName: "파이",
+    role: "공격형",
+    img: "images/attack/fai.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["PvE 딜"],
+    notes: ["연타형 스킬로 딜을 쌓는 타입."]
+  },
+     jin: {
+        displayName: "진",
+        role: "공격형",
+        img: "images/attack/jin.png",
+        mainGear: [
+          "세트: 공격 세트 (복수자 등)",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "단일 딜 컨텐츠"],
+        notes: [
+          "단일 대상에 강한 딜을 넣는 타입.",
+          "공성전 특정 요일/보스에서 딜러로 활약."
+        ]
+      },
+      kyle: {
+        displayName: "카일",
+        role: "공격형 · 딜러",
+        img: "images/attack/kyle.png",
+        mainGear: [
+          "세트: 복수자/암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "결투장", "PvE 딜러"],
+        notes: [
+          "다양한 컨텐츠에서 사용되는 범용 딜러.",
+          "속도와 치명 세팅을 잘 맞추면 폭딜 가능."
+        ]
+      },
+      leo: {
+        displayName: "레오",
+        role: "공격형",
+        img: "images/attack/leo.png",
+        mainGear: [
+          "세트: 복수자/암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "일부 PvE/PvP"],
+        notes: [
+          "상황에 따라 딜/보조를 같이 맡을 수 있는 공격형.",
+          "세부 운용은 컨텐츠에 따라 조정."
+        ]
+      },
+            pungyeon: {
+        displayName: "풍연",
+        role: "공격형",
+        img: "images/attack/pungyeon.png",
+        mainGear: [
+          "세트: 공격 세트",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "고속 클리어 컨텐츠"],
+        notes: [
+          "속도와 폭딜을 활용하는 공격 캐릭터.",
+          "공성전에서 특정 요일 최적화 딜러로 활용 가능."
+        ]
+      },
+                  ryan: {
+        displayName: "라이언",
+        role: "공격형 · 다목적 딜러",
+        img: "images/attack/ryan.png",
+        mainGear: [
+          "세트: 공격 세트",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "PvE 딜", "일부 PvP"],
+        notes: [
+          "여러 공성전 요일에 등장하는 범용 딜러.",
+          "장비는 일반적인 치확/치피/공퍼 위주로 세팅."
+        ]
+      },
+      sein: {
+        displayName: "세인",
+        role: "공격형 · 딜러",
+        img: "images/attack/sein.png",
+        mainGear: [
+          "세트: 복수자/암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "단일 딜 컨텐츠"],
+        notes: [
+          "일요일 크리스 공성전에서 사용되는 딜러 중 한 명.",
+          "단일 대상 폭딜 세팅 추천."
+        ]
+      },
+      taka: {
+        displayName: "타카",
+        role: "공격형",
+        img: "images/attack/taka.png",
+        mainGear: [
+          "세트: 공격 세트",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "보스전"],
+        notes: [
+          "목/금요일 공성전 델론즈·제이브 공략 등에서 활용.",
+          "치명 세팅과 공퍼 위주로 세팅."
+        ]
+      },
+  /* ================= 방어형 (defense 폴더) ================= */
+  nox: {
+    displayName: "녹스",
+    role: "방어형",
+    img: "images/defense/Nox.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 방퍼 / 방퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["공성전", "보스 탱커"],
+    notes: ["디버프와 탱킹을 동시에 맡는 탱커."]
+  },
+  rudy: {
+    displayName: "루디",
+    role: "방어형",
+    img: "images/defense/rudy.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 방퍼 / 방퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["공성전", "PvE 탱커"],
+    notes: ["대표적인 메인 탱커 포지션."]
+  },
+  luke: {
+    displayName: "룩",
+    role: "방어형",
+    img: "images/defense/luke.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 방퍼 / 방퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["PvE", "보스전"],
+    notes: ["도발/방어 위주의 안정적인 탱커."]
+  },
+  aragon: {
+    displayName: "아라곤",
+    role: "방어형",
+    img: "images/defense/aragon.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 방퍼 / 방퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["공성전"],
+    notes: ["단단한 전열을 만들어주는 캐릭터."]
+  },
+  aquila: {
+    displayName: "아킬라",
+    role: "방어형",
+    img: "images/defense/aquila.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 방퍼 / 방퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["보스전", "PvE 탱커"],
+    notes: ["HP 기반 탱킹에 특화된 캐릭터."]
+  },
+        evan: {
+        displayName: "에반",
+        role: "방어형 · 메인 탱커",
+        img: "images/defense/evan.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기",
+          "반지: 자유 (생존기 위주)"
+        ],
+        contents: ["공성전", "보스 탱커", "일부 PvP"],
+        notes: [
+          "단단한 탱킹으로 파티의 생존을 책임지는 캐릭터.",
+          "막기와 방어력 위주로 세팅하면 고난이도 공성전에서 버티기 좋음."
+        ]
+      },
+
+  /* ================= 마법형 (magic 폴더) ================= */
+  daisy: {
+    displayName: "데이지",
+    role: "마법형",
+    img: "images/magic/daisy.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["PvE", "광역 딜 컨텐츠"],
+    notes: ["광역 마법딜에 특화된 캐릭터."]
+  },
+  rin: {
+    displayName: "린",
+    role: "마법형",
+    img: "images/magic/rin.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "PvE"],
+    notes: ["서브 마법 딜러로 활용 가능."]
+  },
+  melkir: {
+    displayName: "멜키르",
+    role: "마법형",
+    img: "images/magic/melkir.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["PvE", "결투장"],
+    notes: ["치명 세팅 기반 마법 딜러."]
+  },
+  vanessa: {
+    displayName: "바네사",
+    role: "마법형",
+    img: "images/magic/vanessa.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전"],
+    notes: ["폭딜 마법형 딜러."]
+  },
+  sylvester: {
+    displayName: "실베스타",
+    role: "마법형",
+    img: "images/magic/sylvester.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["보스전"],
+    notes: ["지속 마딜형 캐릭터."]
+  },
+  espada: {
+    displayName: "에스파다",
+    role: "마법형",
+    img: "images/magic/espada.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["PvE"],
+    notes: ["속공 기반 마법 딜러."]
+  },
+  yeonhee: {
+    displayName: "연희",
+    role: "마법형",
+    img: "images/magic/yeonhee.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "광역 딜 컨텐츠"],
+    notes: ["광역 핵심 딜러로 사용 가능."]
+  },
+  yushin: {
+    displayName: "유신",
+    role: "마법형",
+    img: "images/magic/yushin.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["PvE"],
+    notes: ["버프와 딜을 겸하는 캐릭터."]
+  },
+  juri: {
+    displayName: "쥬리",
+    role: "마법형",
+    img: "images/magic/juri.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["결투장", "PvE"],
+    notes: ["치명 기반 마딜러."]
+  },
+  kiriel: {
+    displayName: "키리엘",
+    role: "마법형",
+    img: "images/magic/kiriel.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전"],
+    notes: ["폭딜 타이밍 맞추기 좋은 딜러."]
+  },
+  pascal: {
+    displayName: "파스칼",
+    role: "마법형",
+    img: "images/magic/pascal.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["PvE"],
+    notes: ["연타형 마법딜."]
+  },
+      miho: {
+        displayName: "미호",
+        role: "마법형 · 메인 딜러",
+        img: "images/magic/miho.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼",
+          "반지: 토벌반지(치확 or 약공 세공)"
+        ],
+        contents: ["공성전", "마법 딜 컨텐츠"],
+        notes: [
+          "공성전 월요일 루디 공략 핵심 딜러 중 한 명.",
+          "속공 세팅(속도)과 치명 세팅을 함께 맞추는 것이 중요."
+        ]
+      },
+            ruri: {
+        displayName: "루리",
+        role: "마법형 · 메인 딜러",
+        img: "images/magic/ruri.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼",
+          "반지: 토벌반지(치확 or 약공 세공)"
+        ],
+        contents: ["공성전", "마법 딜 컨텐츠"],
+        notes: [
+          "미호와 함께 공성전 마법 딜 라인을 담당.",
+          "속공과 치명 세팅이 핵심."
+        ]
+      },
+  /* ================= 지원형 (support 폴더) ================= */
+  elise: {
+    displayName: "엘리스",
+    role: "지원형",
+    img: "images/support/elise.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 생퍼 / 생퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["공성전", "힐/버프 컨텐츠"],
+    notes: ["힐과 버프로 파티 안정성을 올려주는 서포터."]
+  },
+  platon: {
+    displayName: "플라튼",
+    role: "지원형",
+    img: "images/support/platon.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 방퍼 / 방퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["PvE", "보조 탱/서포트"],
+    notes: ["방어 보조 및 보조 탱커 역할."]
+  },
+      biscuit: {
+        displayName: "비스킷",
+        role: "지원형 · 서포터",
+        img: "images/support/biscuit.png",
+        mainGear: [
+          "세트: 암살자 or 복수자",
+          "무기: 치확 / 치확 (치명 100% 맞추기)",
+          "방어구: 공퍼 / 공퍼",
+          "반지: 권능 반지"
+        ],
+        contents: ["공성전", "결투장 보조", "PvE 서포트"],
+        notes: [
+          "치확을 100%까지 맞춰서 안정적인 버프/디버프 지원.",
+          "공성전에서 각종 버프와 디버프로 딜러를 보조하는 핵심 서포터."
+        ]
+      },
+            chloe: {
+        displayName: "클로에",
+        role: "지원형",
+        img: "images/support/chloe.png",
+        mainGear: [
+          "세트: 탱 or 지원 세트 (자유)",
+          "무기/방어구: 생명력·방어 위주",
+          "반지: 생존기 위주(기합/수문장 등)"
+        ],
+        contents: ["공성전", "일부 PvE"],
+        notes: [
+          "아군 보호 및 회복에 특화된 서포터.",
+          "세부 세팅은 공략 상황에 맞게 자유롭게 조정."
+        ]
+      },
+            lina: {
+        displayName: "리나",
+        role: "지원형 · 힐러",
+        img: "images/support/lina.png",
+        mainGear: [
+          "세트: 수문장/지원 세트",
+          "무기: 생퍼 / 생퍼 또는 생퍼 / 약공",
+          "방어구: 막기 / 막기",
+          "반지: 기합/권능"
+        ],
+        contents: ["공성전", "힐/버프 중심 컨텐츠"],
+        notes: [
+          "아군 생존에 큰 도움을 주는 힐러형 지원.",
+          "장비는 생존 위주로 맞추고, 스킬 타이밍이 중요."
+        ]
+      },
+            orly: {
+        displayName: "오를리",
+        role: "지원형 · 탱/힐 겸용 서포터",
+        img: "images/support/orly.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 생퍼 / 약공 또는 생퍼 / 생퍼",
+          "방어구: 막기 / 막기",
+          "반지: 기합 or 권능"
+        ],
+        contents: ["공성전", "PvE 서포트"],
+        notes: [
+          "탱+힐+버프를 겸하는 만능 서포터.",
+          "공성전에서 탱커와 딜러 사이 안정성을 올려줌."
+        ]
+      },
+  /* ================= 만능형 (versatile 폴더) ================= */
+  nia: {
+    displayName: "니아",
+    role: "만능형",
+    img: "images/versatile/nia.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "PvE"],
+    notes: ["서브딜 및 보조 역할을 겸하는 캐릭터."]
+  },
+  spike: {
+    displayName: "스파이크",
+    role: "만능형",
+    img: "images/versatile/spike.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전", "빙결 딜 컨텐츠"],
+    notes: ["빙결과 딜을 동시에 가져가는 캐릭터."]
+  },
+  eileen: {
+    displayName: "아일린",
+    role: "만능형",
+    img: "images/versatile/eileen.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전"],
+    notes: ["속공 기반 만능 딜러."]
+  },
+  ace: {
+    displayName: "에이스",
+    role: "만능형",
+    img: "images/versatile/ace.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["결투장", "PvE"],
+    notes: ["PvP 중심으로 활용되는 딜러."]
+  },
+  elysia: {
+    displayName: "엘리시아",
+    role: "만능형",
+    img: "images/versatile/elysia.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["보스전", "공성전"],
+    notes: ["하이브리드 딜러 포지션."]
+  },
+  jave: {
+    displayName: "제이브",
+    role: "만능형",
+    img: "images/versatile/jave.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전"],
+    notes: ["여러 요일 공성전에서 사용되는 딜러."]
+  },
+  chancellor: {
+    displayName: "챈슬러",
+    role: "만능형",
+    img: "images/versatile/chancellor.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 방퍼 / 방퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["공성전", "보조 탱"],
+    notes: ["탱/딜을 함께 담당하는 하이브리드 캐릭터."]
+  },
+  karma: {
+    displayName: "카르마",
+    role: "만능형",
+    img: "images/versatile/karma.png",
+    mainGear: [
+      "세트: 복수자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["PvE", "디버프 컨텐츠"],
+    notes: ["디버프와 딜을 함께 제공하는 딜러."]
+  },
+  chris: {
+    displayName: "크리스",
+    role: "만능형",
+    img: "images/versatile/chris.png",
+    mainGear: [
+      "세트: 암살자",
+      "무기: 치확 / 치피",
+      "방어구: 공퍼 / 공퍼"
+    ],
+    contents: ["공성전(일요일)", "보스전"],
+    notes: ["일요일 크리스 공성전에서 핵심 딜러."]
+  },
+  trude: {
+    displayName: "트루드",
+    role: "만능형",
+    img: "images/versatile/trude.png",
+    mainGear: [
+      "세트: 수문장",
+      "무기: 방퍼 / 방퍼",
+      "방어구: 막기 / 막기"
+    ],
+    contents: ["PvE", "보조 탱커"],
+    notes: ["탱커 겸 보조 역할로 운용."]
+  },
+      jek: {
+        displayName: "지크",
+        role: "만능형 · 딜러/서브딜",
+        img: "images/versatile/zeke.png",
+        mainGear: [
+          "세트: 복수자/암살자 등 공격 세트",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼",
+          "반지: 토벌/권능"
+        ],
+        contents: ["공성전", "PvE 딜러"],
+        notes: [
+          "다양한 컨텐츠에서 딜러로 기용 가능한 범용 캐릭터.",
+          "공성전에서도 딜 포텐셜이 좋아 서브딜러로 채용."
+        ]
+      },
+      rachel: {
+        displayName: "레이첼",
+        role: "만능형 · 메인 딜러/서브딜",
+        img: "images/versatile/rachael.png",
+        mainGear: [
+          "세트: 복수자/암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "보스전", "일부 PvP"],
+        notes: [
+          "여러 요일 공성전에서 자주 기용되는 핵심 딜러.",
+          "스킬 순서와 버프 타이밍을 맞추면 높은 폭딜 가능."
+        ]
+      },
+    };
+
+    /* --- 공성전 데이터 (네가 쓰던 것 그대로) --- */
     const siegeData = {
       mon: {
         title: "월요일 공성전 (루디)",
@@ -433,31 +1253,11 @@
         title: "화요일 공성전 (아일린)",
         meta: "밸런스 진형",
         chars: [
-          {
-            name: "미호",
-            img: "images/magic/miho.png",
-            items: ["장비"]
-          },
-          {
-            name: "루리",
-            img: "images/magic/ruri.png",
-            items: ["장비"]
-          },
-          {
-            name: "비스킷",
-            img: "images/support/biscuit.png",
-            items: ["장비"]
-          },
-          {
-            name: "리나",
-            img: "images/support/lina.png",
-            items: ["장비"]
-          },
-          {
-            name: "클로에",
-            img: "images/support/chloe.png",
-            items: ["장비"]
-          }
+          { name: "미호", img: "images/magic/miho.png", items: ["장비"] },
+          { name: "루리", img: "images/magic/ruri.png", items: ["장비"] },
+          { name: "비스킷", img: "images/support/biscuit.png", items: ["장비"] },
+          { name: "리나", img: "images/support/lina.png", items: ["장비"] },
+          { name: "클로에", img: "images/support/chloe.png", items: ["장비"] }
         ],
         tips: ["스킬순서 :"]
       },
@@ -465,31 +1265,11 @@
         title: "수요일 공성전 (레이첼)",
         meta: "밸런스 진형",
         chars: [
-          {
-            name: "미호",
-            img: "images/magic/miho.png",
-            items: ["장비"]
-          },
-          {
-            name: "루리",
-            img: "images/magic/ruri.png",
-            items: ["장비"]
-          },
-          {
-            name: "비스킷",
-            img: "images/support/biscuit.png",
-            items: ["장비"]
-          },
-          {
-            name: "오를리",
-            img: "images/support/orly.png",
-            items: ["장비"]
-          },
-          {
-            name: "라이언",
-            img: "images/attack/ryan.png",
-            items: ["장비"]
-          }
+          { name: "미호", img: "images/magic/miho.png", items: ["장비"] },
+          { name: "루리", img: "images/magic/ruri.png", items: ["장비"] },
+          { name: "비스킷", img: "images/support/biscuit.png", items: ["장비"] },
+          { name: "오를리", img: "images/support/orly.png", items: ["장비"] },
+          { name: "라이언", img: "images/attack/ryan.png", items: ["장비"] }
         ],
         tips: ["스킬순서 :"]
       },
@@ -497,31 +1277,11 @@
         title: "목요일 공성전 (델론즈)",
         meta: "밸런스 진형",
         chars: [
-          {
-            name: "타카",
-            img: "images/attack/taka.png",
-            items: ["장비"]
-          },
-          {
-            name: "라이언",
-            img: "images/attack/ryan.png",
-            items: ["장비"]
-          },
-          {
-            name: "비스킷",
-            img: "images/support/biscuit.png",
-            items: ["장비"]
-          },
-          {
-            name: "레이첼",
-            img: "images/versatile/rachael.png",
-            items: ["장비"]
-          },
-          {
-            name: "진",
-            img: "images/attack/jin.png",
-            items: ["장비"]
-          }
+          { name: "타카", img: "images/attack/taka.png", items: ["장비"] },
+          { name: "라이언", img: "images/attack/ryan.png", items: ["장비"] },
+          { name: "비스킷", img: "images/support/biscuit.png", items: ["장비"] },
+          { name: "레이첼", img: "images/versatile/rachael.png", items: ["장비"] },
+          { name: "진", img: "images/attack/jin.png", items: ["장비"] }
         ],
         tips: ["스킬순서 :"]
       },
@@ -529,31 +1289,11 @@
         title: "금요일 공성전 (제이브)",
         meta: "밸런스 진형",
         chars: [
-          {
-            name: "라이언",
-            img: "images/attack/ryan.png",
-            items: ["장비"]
-          },
-          {
-            name: "타카",
-            img: "images/attack/taka.png",
-            items: ["장비"]
-          },
-          {
-            name: "레이첼",
-            img: "images/versatile/rachael.png",
-            items: ["장비"]
-          },
-          {
-            name: "비스킷",
-            img: "images/support/biscuit.png",
-            items: ["장비"]
-          },
-          {
-            name: "지크",
-            img: "images/versatile/zeke.png",
-            items: ["장비"]
-          }
+          { name: "라이언", img: "images/attack/ryan.png", items: ["장비"] },
+          { name: "타카", img: "images/attack/taka.png", items: ["장비"] },
+          { name: "레이첼", img: "images/versatile/rachael.png", items: ["장비"] },
+          { name: "비스킷", img: "images/support/biscuit.png", items: ["장비"] },
+          { name: "지크", img: "images/versatile/zeke.png", items: ["장비"] }
         ],
         tips: ["스킬순서 :"]
       },
@@ -561,31 +1301,11 @@
         title: "토요일 공성전 (스파이크)",
         meta: "밸런스 진형",
         chars: [
-          {
-            name: "카일",
-            img: "images/attack/kyle.png",
-            items: ["장비"]
-          },
-          {
-            name: "라이언",
-            img: "images/attack/ryan.png",
-            items: ["장비"]
-          },
-          {
-            name: "비스킷",
-            img: "images/support/biscuit.png",
-            items: ["장비"]
-          },
-          {
-            name: "레이첼",
-            img: "images/versatile/rachael.png",
-            items: ["장비"]
-          },
-          {
-            name: "풍연",
-            img: "images/attack/pungyeon.png",
-            items: ["장비"]
-          }
+          { name: "카일", img: "images/attack/kyle.png", items: ["장비"] },
+          { name: "라이언", img: "images/attack/ryan.png", items: ["장비"] },
+          { name: "비스킷", img: "images/support/biscuit.png", items: ["장비"] },
+          { name: "레이첼", img: "images/versatile/rachael.png", items: ["장비"] },
+          { name: "풍연", img: "images/attack/pungyeon.png", items: ["장비"] }
         ],
         tips: ["스킬순서 :"]
       },
@@ -593,50 +1313,107 @@
         title: "일요일 공성전 (크리스)",
         meta: "밸런스 진형",
         chars: [
-          {
-            name: "세인",
-            img: "images/attack/sein.png",
-            items: ["장비"]
-          },
-          {
-            name: "지크",
-            img: "images/versatile/zeke.png",
-            items: ["장비"]
-          },
-          {
-            name: "레이첼",
-            img: "images/versatile/rachael.png",
-            items: ["장비"]
-          },
-          {
-            name: "비스킷",
-            img: "images/support/biscuit.png",
-            items: ["장비"]
-          },
-          {
-            name: "레오",
-            img: "images/attack/leo.png",
-            items: ["장비"]
-          }
+          { name: "세인", img: "images/attack/sein.png", items: ["장비"] },
+          { name: "지크", img: "images/versatile/zeke.png", items: ["장비"] },
+          { name: "레이첼", img: "images/versatile/rachael.png", items: ["장비"] },
+          { name: "비스킷", img: "images/support/biscuit.png", items: ["장비"] },
+          { name: "레오", img: "images/attack/leo.png", items: ["장비"] }
         ],
         tips: ["스킬순서 :"]
       }
     };
 
-    // --- DOM 요소 ---
+    /* --- DOM 요소 --- */
     const siegeCard = document.getElementById("siege-card");
     const siegeSection = document.getElementById("siege-section");
     const closeSiegeBtn = document.getElementById("close-siege");
     const dayButtons = document.querySelectorAll(".day-btn");
     const contentBox = document.getElementById("siege-content");
 
-    // 공성전 카드 클릭 → 섹션 열기
-    siegeCard.addEventListener("click", () => {
-      siegeSection.style.display = "block";
-      selectDay("mon"); // 기본 월요일
+    const characterCard = document.getElementById("character-card");
+    const characterSection = document.getElementById("character-section");
+    const closeCharacterBtn = document.getElementById("close-character");
+    const characterButtonsContainer = document.getElementById("character-buttons");
+    const characterContentBox = document.getElementById("character-content");
+
+    /* --- 캐릭터 버튼 생성 (가나다 순) --- */
+    const characterKeysSorted = Object.keys(characterData).sort((a, b) => {
+      const nameA = characterData[a].displayName;
+      const nameB = characterData[b].displayName;
+      return nameA.localeCompare(nameB, "ko-KR");
     });
 
-    // 닫기 버튼 → 섹션 닫기
+    characterKeysSorted.forEach((key) => {
+      const info = characterData[key];
+      const btn = document.createElement("button");
+      btn.className = "character-btn";
+      btn.textContent = info.displayName;
+      btn.dataset.charKey = key;
+      btn.addEventListener("click", () => selectCharacter(key));
+      characterButtonsContainer.appendChild(btn);
+    });
+
+    function selectCharacter(key) {
+      const info = characterData[key];
+      if (!info) return;
+
+      // 버튼 active 처리
+      const allCharBtns = document.querySelectorAll(".character-btn");
+      allCharBtns.forEach((b) => {
+        if (b.dataset.charKey === key) {
+          b.classList.add("active");
+        } else {
+          b.classList.remove("active");
+        }
+      });
+
+      const mainGearList = (info.mainGear || [])
+        .map((g) => `<li>${g}</li>`)
+        .join("");
+
+      const contentsBadges = (info.contents || [])
+        .map((c) => `<span class="badge">${c}</span>`)
+        .join("");
+
+      const notesList = (info.notes || [])
+        .map((n) => `<li>${n}</li>`)
+        .join("");
+
+      characterContentBox.innerHTML = `
+        <div class="character-detail">
+          <div class="character-detail-left">
+            <div class="character-detail-name">${info.displayName}</div>
+            <div class="character-detail-role">${info.role || ""}</div>
+            <img src="${info.img}" alt="${info.displayName}" class="char-portrait" />
+          </div>
+          <div>
+            <div class="character-detail-right-section-title">주요 장비 세팅</div>
+            <ul>
+              ${mainGearList}
+            </ul>
+
+            <div class="character-detail-right-section-title">주로 사용되는 컨텐츠</div>
+            <div class="badge-list">
+              ${contentsBadges}
+            </div>
+
+            <div class="character-detail-right-section-title">운용 메모</div>
+            <ul>
+              ${notesList}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    /* --- 공성전: 카드 클릭 → 섹션 열기 --- */
+    siegeCard.addEventListener("click", () => {
+      siegeSection.style.display = "block";
+      characterSection.style.display = "none"; // 캐릭터 섹션 닫기
+      selectDay("mon");
+    });
+
+    /* --- 공성전: 닫기 버튼 --- */
     closeSiegeBtn.addEventListener("click", () => {
       siegeSection.style.display = "none";
       dayButtons.forEach((btn) => btn.classList.remove("active"));
@@ -648,7 +1425,36 @@
       `;
     });
 
-    // 요일 버튼 클릭 이벤트
+    /* --- 캐릭터: 카드 클릭 → 섹션 열기 --- */
+    characterCard.addEventListener("click", () => {
+      characterSection.style.display = "block";
+      siegeSection.style.display = "none"; // 공성전 섹션 닫기
+
+      characterContentBox.innerHTML = `
+        <div class="content-title">캐릭터를 선택해 주세요</div>
+        <div class="content-meta">위의 가나다 순 버튼 중 하나를 선택하면 해당 캐릭터의 상세 정보가 표시됩니다.</div>
+        <p class="hint">※ <code>characterData</code> 내용을 수정하면 캐릭터 정보가 바뀝니다.</p>
+      `;
+
+      // 기본으로 첫 번째 캐릭터 선택하고 싶으면 주석 해제
+      // if (characterKeysSorted.length > 0) {
+      //   selectCharacter(characterKeysSorted[0]);
+      // }
+    });
+
+    /* --- 캐릭터: 닫기 버튼 --- */
+    closeCharacterBtn.addEventListener("click", () => {
+      characterSection.style.display = "none";
+      const allCharBtns = document.querySelectorAll(".character-btn");
+      allCharBtns.forEach((b) => b.classList.remove("active"));
+      characterContentBox.innerHTML = `
+        <div class="content-title">캐릭터를 선택해 주세요</div>
+        <div class="content-meta">위의 버튼들 중 하나를 선택하면 해당 캐릭터의 초상화, 주요 장비, 활용 컨텐츠가 표시됩니다.</div>
+        <p class="hint">※ <code>characterData</code> 내용을 수정하면 캐릭터 정보가 바뀝니다.</p>
+      `;
+    });
+
+    /* --- 공성전: 요일 버튼 이벤트 --- */
     dayButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const dayKey = button.getAttribute("data-day");
@@ -656,9 +1462,7 @@
       });
     });
 
-    // 요일 선택 처리
     function selectDay(dayKey) {
-      // 버튼 active 처리
       dayButtons.forEach((btn) => {
         if (btn.getAttribute("data-day") === dayKey) {
           btn.classList.add("active");
@@ -677,7 +1481,6 @@
         return;
       }
 
-      // 캐릭터 카드 HTML
       let charCards = "";
       if (data.chars && data.chars.length > 0) {
         charCards = data.chars
@@ -701,7 +1504,6 @@
         charCards = `<p class="hint">등록된 캐릭터 정보가 없습니다. <code>chars</code> 배열을 채워 주세요.</p>`;
       }
 
-      // 공략 팁 목록
       const tipsList = (data.tips || [])
         .map((tip) => `<li>${tip}</li>`)
         .join("");
