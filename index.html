@@ -12,6 +12,23 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     }
 
+    .reset-defense-btn {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.reset-defense-btn:hover {
+  background: rgba(30, 64, 175, 0.7);
+  border-color: rgba(129, 140, 248, 0.9);
+}
+
+
     body {
       min-height: 100vh;
       background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
@@ -219,7 +236,7 @@
       color: #6b7280;
     }
 
-    /* --- 공성전 캐릭터 초상화 + 추천 아이템 --- */
+    /* --- 공성전/길드전 캐릭터 카드 공통 --- */
     .char-section-title {
       margin: 6px 0 4px;
       font-size: 0.85rem;
@@ -355,11 +372,57 @@
       background: rgba(15, 23, 42, 0.8);
     }
 
+    /* --- 길드전 전용 스타일 --- */
+    .guild-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .guild-subtitle {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .guild-section-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+      gap: 12px;
+    }
+
+    .guild-defense-label {
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .guild-recommend-title {
+      font-size: 0.9rem;
+      margin: 4px 0;
+      color: #bfdbfe;
+      font-weight: 600;
+    }
+
+    .guild-times {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .guild-char-card {
+      cursor: pointer;
+    }
+
     @media (max-width: 800px) {
       .char-list {
         grid-template-columns: repeat(3, 1fr);
       }
       .character-detail {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .guild-section-split {
         grid-template-columns: minmax(0, 1fr);
       }
     }
@@ -400,11 +463,11 @@
         <div class="title">세븐나이츠 리버스 공략집</div>
         <div class="subtitle">개인용 공략 정리 · 세나R 공성전/덱 정보 모음</div>
       </div>
-      <div class="tag">v0.3 · 로컬/웹용</div>
+      <div class="tag">v0.4 · 로컬/웹용</div>
     </header>
 
     <main>
-      <!-- 캐릭터 메인 카드 (공성전 위에 위치) -->
+      <!-- 캐릭터 메인 카드 -->
       <section class="card" id="character-card">
         <div>
           <div class="card-title">캐릭터</div>
@@ -414,6 +477,18 @@
           </div>
         </div>
         <div class="card-cta">캐릭터 열기</div>
+      </section>
+
+      <!-- 길드전 메인 카드 -->
+      <section class="card" id="guild-card">
+        <div>
+          <div class="card-title">길드전</div>
+          <div class="card-desc">
+            상대 방어팀 3명을 선택하면, 실제로 이겨본 공격팀 조합을 보여줍니다.<br />
+            길드전 주요 캐릭터를 위에, 나머지를 아래에 배치해 빠르게 조합을 고를 수 있습니다.
+          </div>
+        </div>
+        <div class="card-cta">길드전 열기</div>
       </section>
 
       <!-- 공성전 메인 카드 -->
@@ -459,7 +534,6 @@
           <button class="close-btn" id="close-siege">닫기</button>
         </div>
 
-        <!-- 요일 버튼 -->
         <div class="days">
           <button class="day-btn" data-day="mon">월</button>
           <button class="day-btn" data-day="tue">화</button>
@@ -470,7 +544,6 @@
           <button class="day-btn" data-day="sun">일</button>
         </div>
 
-        <!-- 내용 영역 -->
         <div class="content" id="siege-content">
           <div class="content-title">요일을 선택해 주세요</div>
           <div class="content-meta">월~일 중 하나를 선택하면 이 영역에 해당 요일 공략이 표시됩니다.</div>
@@ -478,123 +551,164 @@
           <p class="hint">※ 아래 자바스크립트 데이터(<code>siegeData</code>)를 수정하면 내용이 바뀝니다.</p>
         </div>
       </section>
+
+      <!-- 길드전 상세 영역 -->
+      <section class="section" id="guild-section">
+        <div class="section-header">
+          <div>
+            <div class="section-title">길드전 조합 공략</div>
+            <div class="section-sub">방어팀 3명을 선택하면, 실제로 이긴 공격팀 조합을 표시합니다.</div>
+          </div>
+          <button class="close-btn" id="close-guild">닫기</button>
+        </div>
+
+        <div class="guild-layout">
+          <div class="content" id="guild-selected-defense">
+            <div class="content-title">방어팀을 선택해 주세요</div>
+            <div class="content-meta">
+              아래 길드전 캐릭터 초상화를 눌러, 상대 방어팀 3명을 지정합니다.
+            </div>
+          </div>
+
+          <div class="guild-section-split">
+            <div>
+              <div class="guild-defense-label">주요 길드전 캐릭터</div>
+              <div class="guild-subtitle">길드전에서 자주 쓰는 핵심 캐릭터입니다.</div>
+              <div class="char-list" id="guild-core-list"></div>
+
+              <div class="guild-defense-label" style="margin-top:8px;">전체 길드전 캐릭터</div>
+              <div class="guild-subtitle">위 캐릭터 외에도 사용 가능한 캐릭터 전체 목록입니다.</div>
+              <div class="char-list" id="guild-all-list"></div>
+            </div>
+
+            <div>
+              <div class="guild-defense-label">추천 공격팀</div>
+              <div class="content" id="guild-recommend-content">
+                <div class="content-meta">
+                  방어팀 3명을 모두 선택하면 이 조합을 상대로 이긴 공격팀이 여기 표시됩니다.
+                </div>
+                <p class="hint">※ 아래 <code>guildDefenseList</code>에 공략을 추가해 나가면 점점 길드전 도감이 완성됩니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
   <script>
-    /* --- 캐릭터 데이터: 가나다 순 버튼 + 상세 정보 --- */
+    /* --- 캐릭터 데이터: 네가 쓰던 내용 그대로 + 로지만 뒤에 추가 --- */
     const characterData = {
-      // key는 임의, displayName은 실제 표시 이름 (가나다 정렬 기준)
-        /* ================= 공격형 (attack 폴더) ================= */
-  dellons: {
-    displayName: "델론즈",
-    role: "공격형",
-    img: "images/attack/dellons.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "PvE 딜"],
-    notes: ["고딜 포텐셜을 가진 대표 공격형 딜러."]
-  },
-  ballista: {
-    displayName: "발리스타",
-    role: "공격형",
-    img: "images/attack/ballista.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "결투장"],
-    notes: ["속도와 치명 세팅이 중요."]
-  },
-  bidam: {
-    displayName: "비담",
-    role: "공격형",
-    img: "images/attack/bidam.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["보스전", "단일 딜 컨텐츠"],
-    notes: ["단일 대상 폭딜에 강한 캐릭터."]
-  },
-  amelia: {
-    displayName: "아멜리아",
-    role: "공격형",
-    img: "images/attack/amelia.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "PvE"],
-    notes: ["기동성과 폭딜을 함께 챙기는 타입."]
-  },
-  kagura: {
-    displayName: "카구라",
-    role: "공격형",
-    img: "images/attack/kagura.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "PvE 딜"],
-    notes: ["다양한 상황에서 활용되는 공격형 딜러."]
-  },
-  colt: {
-    displayName: "콜트",
-    role: "공격형",
-    img: "images/attack/colt.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["결투장", "공성전"],
-    notes: ["치명 기반 딜링이 핵심."]
-  },
-  klahahn: {
-    displayName: "클라한",
-    role: "공격형",
-    img: "images/attack/klahahn.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["보스전", "공성전"],
-    notes: ["지속딜 형태로 운용되는 딜러."]
-  },
-  teo: {
-    displayName: "태오",
-    role: "공격형",
-    img: "images/attack/teo.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "PvE"],
-    notes: ["속공 세팅과 폭딜이 중요한 캐릭터."]
-  },
-  fai: {
-    displayName: "파이",
-    role: "공격형",
-    img: "images/attack/fai.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["PvE 딜"],
-    notes: ["연타형 스킬로 딜을 쌓는 타입."]
-  },
-     jin: {
+      /* ================= 공격형 (attack 폴더) ================= */
+      dellons: {
+        displayName: "델론즈",
+        role: "공격형",
+        img: "images/attack/dellons.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "PvE 딜"],
+        notes: ["고딜 포텐셜을 가진 대표 공격형 딜러."]
+      },
+      ballista: {
+        displayName: "발리스타",
+        role: "공격형",
+        img: "images/attack/ballista.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "결투장"],
+        notes: ["속도와 치명 세팅이 중요."]
+      },
+      bidam: {
+        displayName: "비담",
+        role: "공격형",
+        img: "images/attack/bidam.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["보스전", "단일 딜 컨텐츠"],
+        notes: ["단일 대상 폭딜에 강한 캐릭터."]
+      },
+      amelia: {
+        displayName: "아멜리아",
+        role: "공격형",
+        img: "images/attack/amelia.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "PvE"],
+        notes: ["기동성과 폭딜을 함께 챙기는 타입."]
+      },
+      kagura: {
+        displayName: "카구라",
+        role: "공격형",
+        img: "images/attack/kagura.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "PvE 딜"],
+        notes: ["다양한 상황에서 활용되는 공격형 딜러."]
+      },
+      colt: {
+        displayName: "콜트",
+        role: "공격형",
+        img: "images/attack/colt.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["결투장", "공성전"],
+        notes: ["치명 기반 딜링이 핵심."]
+      },
+      klahahn: {
+        displayName: "클라한",
+        role: "공격형",
+        img: "images/attack/klahahn.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["보스전", "공성전"],
+        notes: ["지속딜 형태로 운용되는 딜러."]
+      },
+      teo: {
+        displayName: "태오",
+        role: "공격형",
+        img: "images/attack/teo.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "PvE"],
+        notes: ["속공 세팅과 폭딜이 중요한 캐릭터."]
+      },
+      fai: {
+        displayName: "파이",
+        role: "공격형",
+        img: "images/attack/fai.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["PvE 딜"],
+        notes: ["연타형 스킬로 딜을 쌓는 타입."]
+      },
+      jin: {
         displayName: "진",
         role: "공격형",
         img: "images/attack/jin.png",
@@ -639,7 +753,7 @@
           "세부 운용은 컨텐츠에 따라 조정."
         ]
       },
-            pungyeon: {
+      pungyeon: {
         displayName: "풍연",
         role: "공격형",
         img: "images/attack/pungyeon.png",
@@ -654,7 +768,7 @@
           "공성전에서 특정 요일 최적화 딜러로 활용 가능."
         ]
       },
-                  ryan: {
+      ryan: {
         displayName: "라이언",
         role: "공격형 · 다목적 딜러",
         img: "images/attack/ryan.png",
@@ -699,68 +813,69 @@
           "치명 세팅과 공퍼 위주로 세팅."
         ]
       },
-  /* ================= 방어형 (defense 폴더) ================= */
-  nox: {
-    displayName: "녹스",
-    role: "방어형",
-    img: "images/defense/Nox.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 방퍼 / 방퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["공성전", "보스 탱커"],
-    notes: ["디버프와 탱킹을 동시에 맡는 탱커."]
-  },
-  rudy: {
-    displayName: "루디",
-    role: "방어형",
-    img: "images/defense/rudy.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 방퍼 / 방퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["공성전", "PvE 탱커"],
-    notes: ["대표적인 메인 탱커 포지션."]
-  },
-  luke: {
-    displayName: "룩",
-    role: "방어형",
-    img: "images/defense/luke.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 방퍼 / 방퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["PvE", "보스전"],
-    notes: ["도발/방어 위주의 안정적인 탱커."]
-  },
-  aragon: {
-    displayName: "아라곤",
-    role: "방어형",
-    img: "images/defense/aragon.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 방퍼 / 방퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["공성전"],
-    notes: ["단단한 전열을 만들어주는 캐릭터."]
-  },
-  aquila: {
-    displayName: "아킬라",
-    role: "방어형",
-    img: "images/defense/aquila.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 방퍼 / 방퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["보스전", "PvE 탱커"],
-    notes: ["HP 기반 탱킹에 특화된 캐릭터."]
-  },
-        evan: {
+
+      /* ================= 방어형 (defense 폴더) ================= */
+      nox: {
+        displayName: "녹스",
+        role: "방어형",
+        img: "images/defense/Nox.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["공성전", "보스 탱커"],
+        notes: ["디버프와 탱킹을 동시에 맡는 탱커."]
+      },
+      rudy: {
+        displayName: "루디",
+        role: "방어형",
+        img: "images/defense/rudy.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["공성전", "PvE 탱커"],
+        notes: ["대표적인 메인 탱커 포지션."]
+      },
+      luke: {
+        displayName: "룩",
+        role: "방어형",
+        img: "images/defense/luke.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["PvE", "보스전"],
+        notes: ["도발/방어 위주의 안정적인 탱커."]
+      },
+      aragon: {
+        displayName: "아라곤",
+        role: "방어형",
+        img: "images/defense/aragon.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["공성전"],
+        notes: ["단단한 전열을 만들어주는 캐릭터."]
+      },
+      aquila: {
+        displayName: "아킬라",
+        role: "방어형",
+        img: "images/defense/aquila.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["보스전", "PvE 탱커"],
+        notes: ["HP 기반 탱킹에 특화된 캐릭터."]
+      },
+      evan: {
         displayName: "에반",
         role: "방어형 · 메인 탱커",
         img: "images/defense/evan.png",
@@ -777,139 +892,139 @@
         ]
       },
 
-  /* ================= 마법형 (magic 폴더) ================= */
-  daisy: {
-    displayName: "데이지",
-    role: "마법형",
-    img: "images/magic/daisy.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["PvE", "광역 딜 컨텐츠"],
-    notes: ["광역 마법딜에 특화된 캐릭터."]
-  },
-  rin: {
-    displayName: "린",
-    role: "마법형",
-    img: "images/magic/rin.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "PvE"],
-    notes: ["서브 마법 딜러로 활용 가능."]
-  },
-  melkir: {
-    displayName: "멜키르",
-    role: "마법형",
-    img: "images/magic/melkir.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["PvE", "결투장"],
-    notes: ["치명 세팅 기반 마법 딜러."]
-  },
-  vanessa: {
-    displayName: "바네사",
-    role: "마법형",
-    img: "images/magic/vanessa.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전"],
-    notes: ["폭딜 마법형 딜러."]
-  },
-  sylvester: {
-    displayName: "실베스타",
-    role: "마법형",
-    img: "images/magic/sylvester.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["보스전"],
-    notes: ["지속 마딜형 캐릭터."]
-  },
-  espada: {
-    displayName: "에스파다",
-    role: "마법형",
-    img: "images/magic/espada.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["PvE"],
-    notes: ["속공 기반 마법 딜러."]
-  },
-  yeonhee: {
-    displayName: "연희",
-    role: "마법형",
-    img: "images/magic/yeonhee.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "광역 딜 컨텐츠"],
-    notes: ["광역 핵심 딜러로 사용 가능."]
-  },
-  yushin: {
-    displayName: "유신",
-    role: "마법형",
-    img: "images/magic/yushin.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["PvE"],
-    notes: ["버프와 딜을 겸하는 캐릭터."]
-  },
-  juri: {
-    displayName: "쥬리",
-    role: "마법형",
-    img: "images/magic/juri.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["결투장", "PvE"],
-    notes: ["치명 기반 마딜러."]
-  },
-  kiriel: {
-    displayName: "키리엘",
-    role: "마법형",
-    img: "images/magic/kiriel.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전"],
-    notes: ["폭딜 타이밍 맞추기 좋은 딜러."]
-  },
-  pascal: {
-    displayName: "파스칼",
-    role: "마법형",
-    img: "images/magic/pascal.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["PvE"],
-    notes: ["연타형 마법딜."]
-  },
+      /* ================= 마법형 (magic 폴더) ================= */
+      daisy: {
+        displayName: "데이지",
+        role: "마법형",
+        img: "images/magic/daisy.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["PvE", "광역 딜 컨텐츠"],
+        notes: ["광역 마법딜에 특화된 캐릭터."]
+      },
+      rin: {
+        displayName: "린",
+        role: "마법형",
+        img: "images/magic/rin.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "PvE"],
+        notes: ["서브 마법 딜러로 활용 가능."]
+      },
+      melkir: {
+        displayName: "멜키르",
+        role: "마법형",
+        img: "images/magic/melkir.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["PvE", "결투장"],
+        notes: ["치명 세팅 기반 마법 딜러."]
+      },
+      vanessa: {
+        displayName: "바네사",
+        role: "마법형",
+        img: "images/magic/vanessa.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전"],
+        notes: ["폭딜 마법형 딜러."]
+      },
+      sylvester: {
+        displayName: "실베스타",
+        role: "마법형",
+        img: "images/magic/sylvester.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["보스전"],
+        notes: ["지속 마딜형 캐릭터."]
+      },
+      espada: {
+        displayName: "에스파다",
+        role: "마법형",
+        img: "images/magic/espada.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["PvE"],
+        notes: ["속공 기반 마법 딜러."]
+      },
+      yeonhee: {
+        displayName: "연희",
+        role: "마법형",
+        img: "images/magic/yeonhee.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "광역 딜 컨텐츠"],
+        notes: ["광역 핵심 딜러로 사용 가능."]
+      },
+      yushin: {
+        displayName: "유신",
+        role: "마법형",
+        img: "images/magic/yushin.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["PvE"],
+        notes: ["버프와 딜을 겸하는 캐릭터."]
+      },
+      juri: {
+        displayName: "쥬리",
+        role: "마법형",
+        img: "images/magic/juri.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["결투장", "PvE"],
+        notes: ["치명 기반 마딜러."]
+      },
+      kiriel: {
+        displayName: "키리엘",
+        role: "마법형",
+        img: "images/magic/kiriel.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전"],
+        notes: ["폭딜 타이밍 맞추기 좋은 딜러."]
+      },
+      pascal: {
+        displayName: "파스칼",
+        role: "마법형",
+        img: "images/magic/pascal.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["PvE"],
+        notes: ["연타형 마법딜."]
+      },
       miho: {
         displayName: "미호",
         role: "마법형 · 메인 딜러",
@@ -926,7 +1041,7 @@
           "속공 세팅(속도)과 치명 세팅을 함께 맞추는 것이 중요."
         ]
       },
-            ruri: {
+      ruri: {
         displayName: "루리",
         role: "마법형 · 메인 딜러",
         img: "images/magic/ruri.png",
@@ -942,31 +1057,32 @@
           "속공과 치명 세팅이 핵심."
         ]
       },
-  /* ================= 지원형 (support 폴더) ================= */
-  elise: {
-    displayName: "엘리스",
-    role: "지원형",
-    img: "images/support/elise.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 생퍼 / 생퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["공성전", "힐/버프 컨텐츠"],
-    notes: ["힐과 버프로 파티 안정성을 올려주는 서포터."]
-  },
-  platon: {
-    displayName: "플라튼",
-    role: "지원형",
-    img: "images/support/platon.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 방퍼 / 방퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["PvE", "보조 탱/서포트"],
-    notes: ["방어 보조 및 보조 탱커 역할."]
-  },
+
+      /* ================= 지원형 (support 폴더) ================= */
+      elise: {
+        displayName: "엘리스",
+        role: "지원형",
+        img: "images/support/elise.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 생퍼 / 생퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["공성전", "힐/버프 컨텐츠"],
+        notes: ["힐과 버프로 파티 안정성을 올려주는 서포터."]
+      },
+      platon: {
+        displayName: "플라튼",
+        role: "지원형",
+        img: "images/support/platon.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["PvE", "보조 탱/서포트"],
+        notes: ["방어 보조 및 보조 탱커 역할."]
+      },
       biscuit: {
         displayName: "비스킷",
         role: "지원형 · 서포터",
@@ -983,7 +1099,7 @@
           "공성전에서 각종 버프와 디버프로 딜러를 보조하는 핵심 서포터."
         ]
       },
-            chloe: {
+      chloe: {
         displayName: "클로에",
         role: "지원형",
         img: "images/support/chloe.png",
@@ -998,7 +1114,7 @@
           "세부 세팅은 공략 상황에 맞게 자유롭게 조정."
         ]
       },
-            lina: {
+      lina: {
         displayName: "리나",
         role: "지원형 · 힐러",
         img: "images/support/lina.png",
@@ -1014,7 +1130,7 @@
           "장비는 생존 위주로 맞추고, 스킬 타이밍이 중요."
         ]
       },
-            orly: {
+      orly: {
         displayName: "오를리",
         role: "지원형 · 탱/힐 겸용 서포터",
         img: "images/support/orly.png",
@@ -1030,127 +1146,142 @@
           "공성전에서 탱커와 딜러 사이 안정성을 올려줌."
         ]
       },
-  /* ================= 만능형 (versatile 폴더) ================= */
-  nia: {
-    displayName: "니아",
-    role: "만능형",
-    img: "images/versatile/nia.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "PvE"],
-    notes: ["서브딜 및 보조 역할을 겸하는 캐릭터."]
-  },
-  spike: {
-    displayName: "스파이크",
-    role: "만능형",
-    img: "images/versatile/spike.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전", "빙결 딜 컨텐츠"],
-    notes: ["빙결과 딜을 동시에 가져가는 캐릭터."]
-  },
-  eileen: {
-    displayName: "아일린",
-    role: "만능형",
-    img: "images/versatile/eileen.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전"],
-    notes: ["속공 기반 만능 딜러."]
-  },
-  ace: {
-    displayName: "에이스",
-    role: "만능형",
-    img: "images/versatile/ace.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["결투장", "PvE"],
-    notes: ["PvP 중심으로 활용되는 딜러."]
-  },
-  elysia: {
-    displayName: "엘리시아",
-    role: "만능형",
-    img: "images/versatile/elysia.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["보스전", "공성전"],
-    notes: ["하이브리드 딜러 포지션."]
-  },
-  jave: {
-    displayName: "제이브",
-    role: "만능형",
-    img: "images/versatile/jave.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전"],
-    notes: ["여러 요일 공성전에서 사용되는 딜러."]
-  },
-  chancellor: {
-    displayName: "챈슬러",
-    role: "만능형",
-    img: "images/versatile/chancellor.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 방퍼 / 방퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["공성전", "보조 탱"],
-    notes: ["탱/딜을 함께 담당하는 하이브리드 캐릭터."]
-  },
-  karma: {
-    displayName: "카르마",
-    role: "만능형",
-    img: "images/versatile/karma.png",
-    mainGear: [
-      "세트: 복수자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["PvE", "디버프 컨텐츠"],
-    notes: ["디버프와 딜을 함께 제공하는 딜러."]
-  },
-  chris: {
-    displayName: "크리스",
-    role: "만능형",
-    img: "images/versatile/chris.png",
-    mainGear: [
-      "세트: 암살자",
-      "무기: 치확 / 치피",
-      "방어구: 공퍼 / 공퍼"
-    ],
-    contents: ["공성전(일요일)", "보스전"],
-    notes: ["일요일 크리스 공성전에서 핵심 딜러."]
-  },
-  trude: {
-    displayName: "트루드",
-    role: "만능형",
-    img: "images/versatile/trude.png",
-    mainGear: [
-      "세트: 수문장",
-      "무기: 방퍼 / 방퍼",
-      "방어구: 막기 / 막기"
-    ],
-    contents: ["PvE", "보조 탱커"],
-    notes: ["탱커 겸 보조 역할로 운용."]
-  },
+      rozi: {
+        displayName: "로지",
+        role: "지원형 · 탱/힐 겸용 서포터",
+        img: "images/support/rozi.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 생퍼 / 약공 또는 생퍼 / 생퍼",
+          "방어구: 막기 / 막기",
+          "반지: 기합 or 권능"
+        ],
+        contents: ["길드전", "PvE 서포트"],
+        notes: [
+          "길드전에서 탱커와 딜러 사이 안정성을 올려줌."
+        ]
+      },
+      /* ================= 만능형 (versatile 폴더) ================= */
+      nia: {
+        displayName: "니아",
+        role: "만능형",
+        img: "images/versatile/nia.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "PvE"],
+        notes: ["서브딜 및 보조 역할을 겸하는 캐릭터."]
+      },
+      spike: {
+        displayName: "스파이크",
+        role: "만능형",
+        img: "images/versatile/spike.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전", "빙결 딜 컨텐츠"],
+        notes: ["빙결과 딜을 동시에 가져가는 캐릭터."]
+      },
+      eileen: {
+        displayName: "아일린",
+        role: "만능형",
+        img: "images/versatile/eileen.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전"],
+        notes: ["속공 기반 만능 딜러."]
+      },
+      ace: {
+        displayName: "에이스",
+        role: "만능형",
+        img: "images/versatile/ace.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["결투장", "PvE"],
+        notes: ["PvP 중심으로 활용되는 딜러."]
+      },
+      elysia: {
+        displayName: "엘리시아",
+        role: "만능형",
+        img: "images/versatile/elysia.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["보스전", "공성전"],
+        notes: ["하이브리드 딜러 포지션."]
+      },
+      jave: {
+        displayName: "제이브",
+        role: "만능형",
+        img: "images/versatile/jave.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전"],
+        notes: ["여러 요일 공성전에서 사용되는 딜러."]
+      },
+      chancellor: {
+        displayName: "챈슬러",
+        role: "만능형",
+        img: "images/versatile/chancellor.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["공성전", "보조 탱"],
+        notes: ["탱/딜을 함께 담당하는 하이브리드 캐릭터."]
+      },
+      karma: {
+        displayName: "카르마",
+        role: "만능형",
+        img: "images/versatile/karma.png",
+        mainGear: [
+          "세트: 복수자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["PvE", "디버프 컨텐츠"],
+        notes: ["디버프와 딜을 함께 제공하는 딜러."]
+      },
+      chris: {
+        displayName: "크리스",
+        role: "만능형",
+        img: "images/versatile/chris.png",
+        mainGear: [
+          "세트: 암살자",
+          "무기: 치확 / 치피",
+          "방어구: 공퍼 / 공퍼"
+        ],
+        contents: ["공성전(일요일)", "보스전"],
+        notes: ["일요일 크리스 공성전에서 핵심 딜러."]
+      },
+      trude: {
+        displayName: "트루드",
+        role: "만능형",
+        img: "images/versatile/trude.png",
+        mainGear: [
+          "세트: 수문장",
+          "무기: 방퍼 / 방퍼",
+          "방어구: 막기 / 막기"
+        ],
+        contents: ["PvE", "보조 탱커"],
+        notes: ["탱커 겸 보조 역할로 운용."]
+      },
       jek: {
         displayName: "지크",
         role: "만능형 · 딜러/서브딜",
@@ -1181,7 +1312,24 @@
           "여러 요일 공성전에서 자주 기용되는 핵심 딜러.",
           "스킬 순서와 버프 타이밍을 맞추면 높은 폭딜 가능."
         ]
-      },
+      }
+    };
+
+    /* 길드전에 쓰이는 로지 추가 (객체에 속성만 추가) */
+    characterData.rozi = {
+      displayName: "로지",
+      role: "만능형",
+      img: "images/support/rozi.png",
+      mainGear: [
+        "세트: 복수자/암살자",
+        "무기: 치확 / 치피",
+        "방어구: 공퍼 / 공퍼"
+      ],
+      contents: ["길드전"],
+      notes: [
+        "길드전에서 자주 기용되는 딜러.",
+        "방깎/디버프와 딜을 함께 담당."
+      ]
     };
 
     /* --- 공성전 데이터 (네가 쓰던 것 그대로) --- */
@@ -1323,6 +1471,319 @@
       }
     };
 
+    /* --- 길드전 데이터: 방어팀 조합 → 이긴 공격팀 --- */
+    const guildDefenseList = [
+      { id: 1, defense: ["rudy", "trude", "karma"], recommended: [] },
+      {
+        id: 2,
+        defense: ["trude", "elysia", "colt"],
+        recommended: [
+          { team: ["platon", "colt", "amelia"], times: 1 },
+          { team: ["platon", "rin", "elise"], times: 1 }
+        ]
+      },
+      {
+        id: 3,
+        defense: ["platon", "sylvester", "amelia"],
+        recommended: [
+          { team: ["rozi", "nox", "chris"], times: 2 },
+          { team: ["platon", "amelia", "colt"], times: 1 },
+          { team: ["trude", "colt", "elysia"], times: 1 },
+          { team: ["kyle", "kagura", "fai"], times: 1 }
+        ]
+      },
+      {
+        id: 4,
+        defense: ["yeonhee", "vanessa", "kiriel"],
+        recommended: [
+          { team: ["yeonhee", "vanessa", "rozi"], times: 1 },
+          { team: ["kyle", "kagura", "fai"], times: 2 },
+          { team: ["yeonhee", "vanessa", "kiriel"], times: 1 },
+          { team: ["yeonhee", "vanessa", "rin"], times: 1 }
+        ]
+      },
+      {
+        id: 5,
+        defense: ["yeonhee", "vanessa", "rozi"],
+        recommended: [
+          { team: ["rin", "vanessa", "rozi"], times: 1 },
+          { team: ["elise", "aragon", "spike"], times: 2 },
+          { team: ["ballista", "colt", "platon"], times: 1 },
+          { team: ["yeonhee", "vanessa", "rozi"], times: 1 },
+          { team: ["nia", "yeonhee", "rozi"], times: 1 },
+          { team: ["yeonhee", "vanessa", "kiriel"], times: 2 }
+        ]
+      },
+      {
+        id: 6,
+        defense: ["yeonhee", "vanessa", "rin"],
+        recommended: []
+      },
+      {
+        id: 7,
+        defense: ["kagura", "kyle", "fai"],
+        recommended: [
+          { team: ["trude", "platon", "elysia"], times: 1 }
+        ]
+      },
+      {
+        id: 8,
+        defense: ["yushin", "sylvester", "rin"],
+        recommended: [
+          { team: ["amelia", "trude", "elise"], times: 1 }
+        ]
+      },
+      {
+        id: 9,
+        defense: ["platon", "colt", "amelia"],
+        recommended: [
+          { team: ["kyle", "colt", "kagura"], times: 1 }
+        ]
+      },
+      {
+        id: 10,
+        defense: ["dellons", "amelia", "colt"],
+        recommended: [
+          { team: ["kyle", "colt", "kagura"], times: 2 },
+          { team: ["yeonhee", "vanessa", "kiriel"], times: 1 }
+        ]
+      },
+      {
+        id: 11,
+        defense: ["yushin", "kiriel", "sylvester"],
+        recommended: [
+          { team: ["amelia", "platon", "sylvester"], times: 1 }
+        ]
+      },
+      {
+        id: 12,
+        defense: ["orly", "rin", "juri"],
+        recommended: [
+          { team: ["juri", "sylvester", "rin"], times: 1 }
+        ]
+      },
+      {
+        id: 13,
+        defense: ["trude", "colt", "dellons"],
+        recommended: [
+          { team: ["amelia", "trude", "juri"], times: 1 }
+        ]
+      },
+      {
+        id: 14,
+        defense: ["orly", "rin", "kiriel"],
+        recommended: [
+          { team: ["trude", "platon", "elysia"], times: 1 },
+          { team: ["rudy", "elise", "platon"], times: 1 },
+          { team: ["platon", "trude", "sylvester"], times: 1 }
+        ]
+      },
+      {
+        id: 15,
+        defense: ["kiriel", "rin", "elysia"],
+        recommended: [
+          { team: ["karma", "rudy", "rin"], times: 1 },
+          { team: ["kyle", "colt", "kagura"], times: 1 }
+        ]
+      },
+      {
+        id: 16,
+        defense: ["rin", "yushin", "melkir"],
+        recommended: [
+          { team: ["teo", "dellons", "amelia"], times: 1 },
+          { team: ["orly", "sylvester", "juri"], times: 1 }
+        ]
+      },
+      {
+        id: 17,
+        defense: ["dellons", "colt", "elysia"],
+        recommended: [
+          { team: ["kyle", "kagura", "fai"], times: 2 },
+          { team: ["kyle", "kagura", "dellons"], times: 1 }
+        ]
+      },
+      {
+        id: 18,
+        defense: ["karma", "rudy", "spike"],
+        recommended: [
+          { team: ["platon", "colt", "amelia"], times: 1 }
+        ]
+      },
+      {
+        id: 19,
+        defense: ["kiriel", "melkir", "yushin"],
+        recommended: [
+          { team: ["fai", "platon", "colt"], times: 1 }
+        ]
+      },
+      {
+        id: 20,
+        defense: ["trude", "karma", "elise"],
+        recommended: [
+          { team: ["rozi", "chris", "nox"], times: 1 }
+        ]
+      },
+      {
+        id: 21,
+        defense: ["platon", "dellons", "fai"],
+        recommended: [
+          { team: ["kyle", "kagura", "fai"], times: 1 }
+        ]
+      },
+      {
+        id: 22,
+        defense: ["platon", "colt", "elysia"],
+        recommended: [
+          { team: ["platon", "trude", "elysia"], times: 1 }
+        ]
+      },
+      {
+        id: 23,
+        defense: ["platon", "rozi", "colt"],
+        recommended: [
+          { team: ["chancellor", "spike", "amelia"], times: 1 }
+        ]
+      },
+      {
+        id: 24,
+        defense: ["kyle", "kagura", "fai"],
+        recommended: [
+          { team: ["colt", "platon", "chancellor"], times: 9 },
+          { team: ["kyle", "kagura", "fai"], times: 3 },
+          { team: ["vanessa", "yeonhee", "rin"], times: 1 }
+        ]
+      },
+      {
+        id: 25,
+        defense: ["platon", "amelia", "kiriel"],
+        recommended: [
+          { team: ["kyle", "kagura", "amelia"], times: 1 }
+        ]
+      },
+      {
+        id: 26,
+        defense: ["yeonhee", "vanessa", "rin"],
+        recommended: [
+          { team: ["spike", "aragon", "elise"], times: 1 }
+        ]
+      },
+      {
+        id: 27,
+        defense: ["juri", "yushin", "rin"],
+        recommended: [
+          { team: ["karma", "rudy", "rin"], times: 3 }
+        ]
+      },
+      {
+        id: 28,
+        defense: ["platon", "colt", "fai"],
+        recommended: [
+          { team: ["kyle", "kagura", "fai"], times: 1 }
+        ]
+      },
+      {
+        id: 29,
+        defense: ["platon", "elysia", "sylvester"],
+        recommended: [
+          { team: ["rozi", "chris", "aquila"], times: 1 }
+        ]
+      },
+      {
+        id: 30,
+        defense: ["platon", "colt", "amelia"],
+        recommended: [
+          { team: ["kagura", "kyle", "fai"], times: 1 }
+        ]
+      },
+      {
+        id: 31,
+        defense: ["yeonhee", "vanessa", "kiriel"],
+        recommended: [
+          { team: ["rudy", "trude", "karma"], times: 1 },
+          { team: ["kyle", "kagura", "fai"], times: 1 }
+        ]
+      },
+      {
+        id: 32,
+        defense: ["sylvester", "amelia", "kiriel"],
+        recommended: [
+          { team: ["rudy", "trude", "karma"], times: 1 }
+        ]
+      },
+      {
+        id: 33,
+        defense: ["kyle", "kagura", "dellons"],
+        recommended: [
+          { team: ["juri", "yushin", "sylvester"], times: 1 }
+        ]
+      },
+      {
+        id: 34,
+        defense: ["sylvester", "amelia", "colt"],
+        recommended: [
+          { team: ["yeonhee", "vanessa", "rozi"], times: 1 }
+        ]
+      },
+      {
+        id: 35,
+        defense: ["kyle", "kagura", "amelia"],
+        recommended: [
+          { team: ["sylvester", "juri", "yushin"], times: 1 },
+          { team: ["trude", "platon", "elysia"], times: 1 }
+        ]
+      },
+      {
+        id: 36,
+        defense: ["rozi", "chris", "aquila"],
+        recommended: [
+          { team: ["trude", "platon", "elysia"], times: 1 }
+        ]
+      },
+      {
+        id: 37,
+        defense: ["yeonhee", "amelia", "sylvester"],
+        recommended: [
+          { team: ["trude", "platon", "elysia"], times: 1 }
+        ]
+      },
+      {
+        id: 38,
+        defense: ["kagura", "kyle", "fai"],
+        recommended: [
+          { team: ["trude", "platon", "elysia"], times: 1 }
+        ]
+      },
+      {
+        id: 39,
+        defense: ["kagura", "kyle", "colt"],
+        recommended: [
+          { team: ["sylvester", "juri", "melkir"], times: 1 }
+        ]
+      },
+      {
+        id: 40,
+        defense: ["yeonhee", "vanessa", "rin"],
+        recommended: [
+          { team: ["spike", "elise", "aragon"], times: 1 }
+        ]
+      }
+    ];
+
+    /* 길드전 캐릭터 목록 (위쪽 핵심 + 아래 전체) */
+    const guildCoreIds = [
+      "rudy", "trude", "karma",
+      "platon", "elysia", "colt",
+      "kyle", "kagura", "fai",
+      "yeonhee", "vanessa", "kiriel",
+      "sylvester", "amelia", "rozi"
+    ];
+
+    const guildAllIds = Array.from(new Set([
+      ...guildCoreIds,
+      "nox", "chris", "nia", "yushin", "rin", "melkir", "teo",
+      "orly", "juri", "ballista", "elise", "aragon", "spike", "dellons", "aquila"
+    ]));
+
     /* --- DOM 요소 --- */
     const siegeCard = document.getElementById("siege-card");
     const siegeSection = document.getElementById("siege-section");
@@ -1335,6 +1796,14 @@
     const closeCharacterBtn = document.getElementById("close-character");
     const characterButtonsContainer = document.getElementById("character-buttons");
     const characterContentBox = document.getElementById("character-content");
+
+    const guildCard = document.getElementById("guild-card");
+    const guildSection = document.getElementById("guild-section");
+    const closeGuildBtn = document.getElementById("close-guild");
+    const guildCoreList = document.getElementById("guild-core-list");
+    const guildAllList = document.getElementById("guild-all-list");
+    const guildSelectedDefenseBox = document.getElementById("guild-selected-defense");
+    const guildRecommendBox = document.getElementById("guild-recommend-content");
 
     /* --- 캐릭터 버튼 생성 (가나다 순) --- */
     const characterKeysSorted = Object.keys(characterData).sort((a, b) => {
@@ -1357,7 +1826,6 @@
       const info = characterData[key];
       if (!info) return;
 
-      // 버튼 active 처리
       const allCharBtns = document.querySelectorAll(".character-btn");
       allCharBtns.forEach((b) => {
         if (b.dataset.charKey === key) {
@@ -1409,7 +1877,8 @@
     /* --- 공성전: 카드 클릭 → 섹션 열기 --- */
     siegeCard.addEventListener("click", () => {
       siegeSection.style.display = "block";
-      characterSection.style.display = "none"; // 캐릭터 섹션 닫기
+      characterSection.style.display = "none";
+      guildSection.style.display = "none";
       selectDay("mon");
     });
 
@@ -1428,18 +1897,14 @@
     /* --- 캐릭터: 카드 클릭 → 섹션 열기 --- */
     characterCard.addEventListener("click", () => {
       characterSection.style.display = "block";
-      siegeSection.style.display = "none"; // 공성전 섹션 닫기
+      siegeSection.style.display = "none";
+      guildSection.style.display = "none";
 
       characterContentBox.innerHTML = `
         <div class="content-title">캐릭터를 선택해 주세요</div>
         <div class="content-meta">위의 가나다 순 버튼 중 하나를 선택하면 해당 캐릭터의 상세 정보가 표시됩니다.</div>
         <p class="hint">※ <code>characterData</code> 내용을 수정하면 캐릭터 정보가 바뀝니다.</p>
       `;
-
-      // 기본으로 첫 번째 캐릭터 선택하고 싶으면 주석 해제
-      // if (characterKeysSorted.length > 0) {
-      //   selectCharacter(characterKeysSorted[0]);
-      // }
     });
 
     /* --- 캐릭터: 닫기 버튼 --- */
@@ -1525,6 +1990,186 @@
         <div class="hint">※ 캐릭터 초상화는 <code>images/...</code> 경로에 이미지 파일을 두고, <code>siegeData</code>의 <code>img</code> 값을 수정하면 됩니다.</div>
       `;
     }
+
+    /* ================= 길드전 로직 ================= */
+
+    let selectedDefenseIds = [];
+
+    function sameTeam(a, b) {
+      if (a.length !== b.length) return false;
+      const s1 = [...a].sort().join("-");
+      const s2 = [...b].sort().join("-");
+      return s1 === s2;
+    }
+
+    function findGuildPatternsForDefense(selected) {
+      return guildDefenseList.filter(entry => sameTeam(entry.defense, selected));
+    }
+
+    function makeGuildCharCardHtml(id) {
+      const info = characterData[id];
+      if (!info) return "";
+      return `
+        <div class="char-card guild-char-card" data-guild-id="${id}">
+          <div class="char-name">${info.displayName}</div>
+          <img src="${info.img}" class="char-portrait" alt="${info.displayName}" />
+        </div>
+      `;
+    }
+
+    function renderGuildCharacterLists() {
+      guildCoreList.innerHTML = guildCoreIds
+        .filter(id => characterData[id])
+        .map(makeGuildCharCardHtml)
+        .join("");
+
+      guildAllList.innerHTML = guildAllIds
+        .filter(id => characterData[id] && !guildCoreIds.includes(id))
+        .map(makeGuildCharCardHtml)
+        .join("");
+    }
+
+function renderSelectedDefense() {
+  if (selectedDefenseIds.length === 0) {
+    guildSelectedDefenseBox.innerHTML = `
+      <div class="content-title">방어팀을 선택해 주세요</div>
+      <div class="content-meta">
+        아래 길드전 캐릭터 초상화를 눌러, 상대 방어팀 3명을 지정합니다.
+      </div>
+    `;
+    return;
+  }
+
+  const cards = selectedDefenseIds.map((id) => {
+    const info = characterData[id];
+    if (!info) return "";
+    return `
+      <div class="char-card">
+        <div class="char-name">${info.displayName}</div>
+        <img src="${info.img}" class="char-portrait" alt="${info.displayName}" />
+      </div>
+    `;
+  }).join("");
+
+  guildSelectedDefenseBox.innerHTML = `
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+      <div class="content-title" style="margin-bottom:0;">선택된 방어팀 (${selectedDefenseIds.length}/3)</div>
+      <button class="reset-defense-btn" id="reset-defense-btn">전체 초기화</button>
+    </div>
+    <div class="char-list">${cards}</div>
+  `;
+
+  const resetBtn = document.getElementById("reset-defense-btn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      selectedDefenseIds = [];
+      renderSelectedDefense();
+      renderGuildRecommendation();
+    });
+  }
+}
+
+
+    function renderGuildRecommendation() {
+      if (selectedDefenseIds.length !== 3) {
+        guildRecommendBox.innerHTML = `
+          <div class="content-meta">
+            방어팀 3명을 모두 선택하면, 이 조합을 상대로 이긴 공격팀이 여기 표시됩니다.
+          </div>
+          <p class="hint">※ 같은 조합으로 여러 번 이겼다면 x2, x3 처럼 횟수가 함께 표시됩니다.</p>
+        `;
+        return;
+      }
+
+      const patterns = findGuildPatternsForDefense(selectedDefenseIds);
+      if (!patterns || patterns.length === 0) {
+        const names = selectedDefenseIds.map(id => characterData[id]?.displayName || id).join(" / ");
+        guildRecommendBox.innerHTML = `
+          <div class="content-title">등록된 공략 없음</div>
+          <div class="content-meta">
+            현재 선택된 방어조합: ${names}<br/>
+            이 조합에 대한 추천 공격팀이 아직 등록되지 않았습니다.<br/>
+            <code>guildDefenseList</code>에 공략을 추가해 보세요.
+          </div>
+        `;
+        return;
+      }
+
+      let html = "";
+      patterns.forEach((pattern) => {
+        const defenseNames = pattern.defense
+          .map(id => characterData[id]?.displayName || id)
+          .join(" / ");
+
+        html += `<div class="guild-recommend-title">방어조합: ${defenseNames} (ID: ${pattern.id})</div>`;
+
+        pattern.recommended.forEach((rec, idx) => {
+          const teamCards = rec.team.map((id) => {
+            const info = characterData[id];
+            if (!info) return "";
+            return `
+              <div class="char-card">
+                <div class="char-name">${info.displayName}</div>
+                <img src="${info.img}" class="char-portrait" alt="${info.displayName}" />
+              </div>
+            `;
+          }).join("");
+
+          const timesText = rec.times && rec.times > 1
+            ? `<div class="guild-times">이 조합으로 승리: x${rec.times}</div>`
+            : "";
+
+          html += `
+            <div class="content-meta">추천 공격팀 ${idx + 1}</div>
+            ${timesText}
+            <div class="char-list">${teamCards}</div>
+          `;
+        });
+
+        html += `<hr style="margin:6px 0; border-color:rgba(55,65,81,0.7);" />`;
+      });
+
+      guildRecommendBox.innerHTML = html;
+    }
+
+    function toggleDefenseSelection(id) {
+      const idx = selectedDefenseIds.indexOf(id);
+      if (idx >= 0) {
+        selectedDefenseIds.splice(idx, 1);
+      } else {
+        if (selectedDefenseIds.length >= 3) {
+          alert("방어팀은 최대 3명까지 선택할 수 있습니다.");
+          return;
+        }
+        selectedDefenseIds.push(id);
+      }
+      renderSelectedDefense();
+      renderGuildRecommendation();
+    }
+
+    guildCard.addEventListener("click", () => {
+      guildSection.style.display = "block";
+      siegeSection.style.display = "none";
+      characterSection.style.display = "none";
+      selectedDefenseIds = [];
+      renderSelectedDefense();
+      renderGuildRecommendation();
+    });
+
+    closeGuildBtn.addEventListener("click", () => {
+      guildSection.style.display = "none";
+      selectedDefenseIds = [];
+    });
+
+    document.addEventListener("click", (e) => {
+      const card = e.target.closest(".guild-char-card");
+      if (!card) return;
+      const id = card.dataset.guildId;
+      toggleDefenseSelection(id);
+    });
+
+    /* 초기 세팅: 길드전 캐릭터 목록 채우기 */
+    renderGuildCharacterLists();
   </script>
 </body>
 </html>
